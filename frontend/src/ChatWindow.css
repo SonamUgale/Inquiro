@@ -1,4 +1,5 @@
 .chatWindow {
+  position: relative;
   background-color: #212121;
   height: 100vh;
   width: 100%;
@@ -32,8 +33,6 @@
   cursor: pointer;
 }
 
-/* chat input */
-
 .chatInput {
   width: 100%;
   display: flex;
@@ -53,6 +52,7 @@
 
 input {
   width: 100%;
+  height: inherit;
   border: none;
   background-color: rgba(255, 255, 255, 0.05);
   padding: 20px;
@@ -97,6 +97,10 @@ input:focus {
   text-align: left;
   z-index: 1000;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
 
 .dropDownItem {
@@ -109,4 +113,22 @@ input:focus {
 .dropDownItem:hover {
   background-color: rgba(180, 180, 180, 0.1);
   border-radius: 6px;
+}
+
+.dropDown.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.chatLoader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  pointer-events: none;
 }

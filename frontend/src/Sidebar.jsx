@@ -14,16 +14,17 @@ function Sidebar() {
     setCurrThreadId,
     setPrevChats,
   } = useContext(MyContext);
+
   const getAllThreads = async () => {
     try {
       const response = await fetch("http://localhost:8080/api/thread");
-      const res = response.json();
+      const res = await response.json();
       const filteredData = res.map((thread) => ({
         threadId: thread.threadId,
         title: thread.title,
       }));
       console.log(filteredData);
-      setallThreads(filteredData);
+      setAllThreads(filteredData);
     } catch (error) {
       console.log(error);
     }
@@ -45,10 +46,12 @@ function Sidebar() {
       );
       const res = await response.json();
       console.log(res);
-      setPrevChats(res);
+
+      setPrevChats(res?.messages ?? []);
+
       setNewChat(false);
     } catch (error) {
-      consolelog(error);
+      console.log(error);
     }
   };
 
@@ -56,11 +59,8 @@ function Sidebar() {
     try {
       const response = await fetch(
         `http://localhost:8080/api/thread/${threadId}`,
-        {
-          method: "DELETE",
-        }
+        { method: "DELETE" }
       );
-
       const res = await response.json();
       console.log(res);
 
@@ -76,12 +76,16 @@ function Sidebar() {
     }
   };
 
+  useEffect(() => {
+    getAllThreads();
+  }, [currThreadId]);
+
   return (
     <section className="sidebar">
       <button onClick={createNewChat}>
         <img src="./src/assets/inquirologo.png" alt="logo" className="logo" />
         <span>
-          <i class="fa-solid fa-pen-to-square"></i>
+          <i className="fa-solid fa-pen-to-square"></i>
         </span>
       </button>
 
@@ -89,8 +93,8 @@ function Sidebar() {
         {allThreads?.map((thread, idx) => (
           <li
             key={idx}
-            onClick={(e) => changeThread(thread.threadId)}
-            className={thread.threadId === currThreadId ? "highlighted" : " "}
+            onClick={() => changeThread(thread.threadId)}
+            className={thread.threadId === currThreadId ? "highlighted" : ""}
           >
             {thread.title}{" "}
             <i

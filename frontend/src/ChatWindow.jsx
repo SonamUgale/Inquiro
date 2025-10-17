@@ -6,7 +6,7 @@ import { RingLoader } from "react-spinners";
 
 function ChatWindow() {
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const {
     prompt,
     setPrompt,
@@ -71,21 +71,25 @@ function ChatWindow() {
             </span>
           </div>
         </div>
-        {isOpen && (
-          <div className="dropDown">
-            <div className="dropDownItem">
-              <i class="fa-solid fa-cloud-arrow-up"></i>Upgrade Plan
-            </div>
-            <div className="dropDownItem">
-              <i class="fa-solid fa-gear"></i>Settings
-            </div>
-            <div className="dropDownItem">
-              <i class="fa-solid fa-arrow-right-from-bracket"></i>Log Out
-            </div>
+        <div className={`dropDown ${isOpen ? "show" : ""}`}>
+          <div className="dropDownItem">
+            <i className="fa-solid fa-cloud-arrow-up"></i> Upgrade Plan
+          </div>
+          <div className="dropDownItem">
+            <i className="fa-solid fa-gear"></i> Settings
+          </div>
+          <div className="dropDownItem">
+            <i className="fa-solid fa-arrow-right-from-bracket"></i> Log Out
+          </div>
+        </div>
+
+        <Chat></Chat>
+        {loading && (
+          <div className="chatLoader">
+            <RingLoader color="#fff" size={40} />
           </div>
         )}
-        <Chat></Chat>
-        <RingLoader color="#fff" size={30} loading={loading}></RingLoader>
+
         <div className="chatInput">
           <div className="inputBox">
             <input

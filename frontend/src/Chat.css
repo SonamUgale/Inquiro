@@ -1,7 +1,10 @@
 .chats {
   max-width: 700px;
   padding: 8rem;
-  /* overflow-y: scroll; */
+  height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .userDiv {
