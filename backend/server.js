@@ -17,21 +17,17 @@ app.use("/api", chatRoute);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+import fs from "fs"; // ADD THIS IMPORT
+
+const frontendPath = path.join(__dirname, "../frontend/build");
+
+if (process.env.NODE_ENV === "production" && fs.existsSync(frontendPath)) {
+  app.use(express.static(frontendPath));
 
   app.use((req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+    res.sendFile(path.join(frontendPath, "index.html"));
   });
-}const connectDB = async () => {
-  try {
-    console.log("Mongo URI:", process.env.MONGO_URI);
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("Connected with database !");
-  } catch (error) {
-    console.log("Failed to connect with database", error);
-  }
-};
+}
 
 const startServer = async () => {
   try {
