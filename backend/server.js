@@ -20,11 +20,10 @@ const __dirname = path.dirname(__filename);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-  app.get("*", (req, res) => {
+  app.use((req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
   });
-}
-const connectDB = async () => {
+}const connectDB = async () => {
   try {
     console.log("Mongo URI:", process.env.MONGO_URI);
     await mongoose.connect(process.env.MONGO_URI);
@@ -34,7 +33,15 @@ const connectDB = async () => {
   }
 };
 
-app.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
-  connectDB();
-});
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(port, () => {
+      console.log(`Server is listening on port ${port}`);
+    });
+  } catch (error) {
+    console.log("Server failed to start", error);
+  }
+};
+
+startServer();
