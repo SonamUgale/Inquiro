@@ -29,6 +29,17 @@ if (process.env.NODE_ENV === "production" && fs.existsSync(frontendPath)) {
   });
 }
 
+const connectDB = async () => {
+  try {
+    console.log("Mongo URI:", process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("Connected with database !");
+  } catch (error) {
+    console.log("Failed to connect with database", error);
+    process.exit(1); // optional but good
+  }
+};
+
 const startServer = async () => {
   try {
     await connectDB();
